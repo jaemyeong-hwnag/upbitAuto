@@ -71,7 +71,7 @@ class Upbit extends UpitData
                         "Authorization: " . $authorize_token . "\r\n"
             )
         );
-        
+        var_dump($authorize_token);
         $context = stream_context_create($opts);
         
         // Open the file using the HTTP headers set above
@@ -87,7 +87,42 @@ class Upbit extends UpitData
         return $return;
     }
 
-    function gen_uuid() {
+    public function getTicker($markets) {
+        // 변수 설정
+        $access_key = $this->AccessKey; // 키
+        $secret_key = $this->SecretKey; // 키
+
+        // 리턴값 기본 설정
+        $return = array();
+        $return['result'] = false;
+        $return['data'] = array();
+
+        $url = "https://api.upbit.com/v1/ticker?markets=" . $markets;
+        $opts = array(
+            'http'=>array(
+              'method'=>"GET",
+              'header'=>"Accept-language: en\r\n" .
+                        "Cookie: foo=bar\r\n" .
+                        "User-agent: BROWSER-DESCRIPTION-HERE\r\n"
+            )
+        );
+        
+        $context = stream_context_create($opts);
+        
+        // Open the file using the HTTP headers set above
+        $response = file_get_contents($url, false, $context);
+        
+        if($response == false){
+            $return['result'] = false;
+        } else {
+            $return['result'] = true;
+            $return['data'] = json_decode($response, true);
+        }
+        
+        return $return;
+    }
+
+    public function gen_uuid() {
         return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
             mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),

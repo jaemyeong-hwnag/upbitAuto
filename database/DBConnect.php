@@ -28,14 +28,21 @@ class DBConnect extends DBData
         return $return;
     }
 
-    public function queryExecute($query){
+    public function queryExecute($query) {
         $result = mysqli_query($this->connect, $query);
 
         return $result;
     }
 
+    public function getSelectOneRow($query) {
+        $result_set = $this->queryExecute($query);
+        $row = mysqli_fetch_array($result_set);
+
+        return $row;
+    }
+
     protected function connectExit() {
-        //mysql_close($this->connect);
+        mysqli_close($this->connect);
     }
 
     function __destruct()
