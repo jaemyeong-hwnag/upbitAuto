@@ -19,10 +19,10 @@ class DBConnect extends DBData
         $values = implode("', '",$data);
 
         $query = "
-            INSERT INTO " . $talbeName . " (" .$columns  . ")
-            VALUSE ('" . $values . "')
+            INSERT INTO " . $tableName . " (" .$columns  . ")
+            VALUES ('" . $values . "')
         ";
-
+        var_dump($query);
         $return = $this->queryExecute($query);
 
         return $return;
@@ -35,7 +35,7 @@ class DBConnect extends DBData
     }
 
     protected function connectExit() {
-        mysql_close($this->connect);
+        //mysql_close($this->connect);
     }
 
     function __destruct()
