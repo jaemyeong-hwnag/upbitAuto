@@ -71,7 +71,7 @@ class Upbit extends UpitData
                         "Authorization: " . $authorize_token . "\r\n"
             )
         );
-        var_dump($authorize_token);
+
         $context = stream_context_create($opts);
         
         // Open the file using the HTTP headers set above
