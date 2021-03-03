@@ -2,7 +2,7 @@
 class SlackWebhooks
 {
     public function sendMessage($message, $url=null) {
-        $url = $url == null ? "https://hooks.slack.com/services/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" : $url;
+        $url = $url == null ? "https://hooks.slack.com/services/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" : $url;
         $messageArray = array("text" => $message);
         $messageJson = json_encode($messageArray);
         
