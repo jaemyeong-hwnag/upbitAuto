@@ -20,7 +20,12 @@ $upbitAccount = $upbit->getAccount();
 
 $warningMessage = "";
 $revenueMessage = "";
+$message = "";
+
 $increase = "";
+$revenueTotal = 0;
+$assetsTotal = 0;
+
 if($upbitAccount["result"] == true) {
     $accountData = $upbitAccount["data"];
 
@@ -30,32 +35,50 @@ if($upbitAccount["result"] == true) {
         $balance = $value["balance"];
 		$avg_buy_price = $value["avg_buy_price"];
 
-        $ticker = $upbit->getTicker($markets);
-        if($ticker["result"] === true){
-            $query = "
-                SELECT korean_name 
-                FROM market
-                WHERE market = '" . $markets . "'
-            ";
-            $marketInfo = $dbconnect->getSelectOneRow($query);
-            $trade_price = $ticker["data"][0]["trade_price"];
+        $query = "
+        SELECT korean_name 
+        FROM market
+        WHERE market = '" . $markets . "'
+        ";
+        $marketInfo = $dbconnect->getSelectOneRow($query);
+        if(isset($marketInfo["korean_name"])) {
+            $ticker = $upbit->getTicker($markets);
+            if($ticker["result"] === true){
+                $trade_price = $ticker["data"][0]["trade_price"];
 
-            $tradeTotlaKRW = $balance * $trade_price;
-            $buyTotlaKRW = $balance * $avg_buy_price;
+                $tradeTotlaKRW = $balance * $trade_price;
+                $buyTotlaKRW = $balance * $avg_buy_price;
 
-			$increaseValue = $trade_price * 100.0 / $avg_buy_price - 100;
-            $revenueValue = $tradeTotlaKRW - $buyTotlaKRW;
+                $increaseValue = $trade_price * 100.0 / $avg_buy_price - 100;
+                
+                if($tradeTotlaKRW > 5000) {
+                    if($increaseValue < -7) {
+                        $revenueValue = $tradeTotlaKRW - $buyTotlaKRW;
+                        $revenueTotal = $revenueTotal + $revenueValue;
+                        $assetsTotal = $assetsTotal + $buyTotlaKRW;
 
-            if($revenueValue < -5000 || $increaseValue < -10) {
-			    $warningMessage .= $marketInfo["korean_name"] . " : " . number_format($revenueValue) . "(" . $increaseValue . "%) \n";
-            }
-            if($revenueValue > 5000 || $increaseValue > 10) {
-                $revenueMessage .= $marketInfo["korean_name"] . " : " . number_format($revenueValue) . "(" . $increaseValue . "%) \n";
+                        $warningMessage .= $marketInfo["korean_name"] . " : " . number_format($revenueValue) . "(" . $increaseValue . "%) \n";
+                    }
+                    if($increaseValue > 10) {
+                        $revenueValue = $tradeTotlaKRW - $buyTotlaKRW;
+                        $revenueTotal = $revenueTotal + $revenueValue;
+                        $assetsTotal = $assetsTotal + $buyTotlaKRW;
+
+                        $revenueMessage .= $marketInfo["korean_name"] . " : " . number_format($revenueValue) . "(" . $increaseValue . "%) \n";
+                    }
+                } else if($markets == "KRW-BTC") {
+					$revenueValue = $tradeTotlaKRW - $buyTotlaKRW;
+					$revenueTotal = $revenueTotal + $revenueValue;
+					$assetsTotal = $assetsTotal + $buyTotlaKRW;
+
+					$message .= $marketInfo["korean_name"] . " : " . number_format($revenueValue) . "(" . $increaseValue . "%) \n";
+				}
+            
             }
         }
     }
 } else {
-    $message = "오류 : " . date("Y-m-d h:m:s");
+    $message .= "오류 : " . date("Y-m-d h:m:s");
 }
 
 if($warningMessage != null) {
@@ -65,10 +88,20 @@ if($warningMessage != null) {
 if($revenueMessage != null) {
     $revenueMessage = "\n수익\n" . $revenueMessage;
 }
-$message = $warningMessage . $revenueMessage;
+
+$total = round($assetsTotal - 1509078);
+$message .= $warningMessage . $revenueMessage;
+
+$btc = $upbit->getTicker("KRW-BTC");
+
+$message .= "\n\n 비트코인";
+$message .= "\n 상한 : 56,000,000~(54,000,000~51,000,000)";
+$message .= "\n 현재가 : " . number_format($btc["data"][0]["trade_price"]);
 
 if($message != null) {
-    $sendUrl = "https://hooks.slack.com/services/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";
+    $message .= "\n 총 수익 : " . number_format(round($revenueTotal));
+
+    $sendUrl = "https://hooks.slack.com/services/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";
     $slack->sendMessage($message, $sendUrl);
 }
 ?>

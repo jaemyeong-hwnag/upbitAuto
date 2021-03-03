@@ -10,8 +10,8 @@ class Upbit extends UpitData
 
     public function getInfo() {
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $url = "https://api.upbit.com/v1/market/all?isDetails=false";
 
@@ -25,10 +25,10 @@ class Upbit extends UpitData
         curl_close($ch);
 
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
 
         return $return;
@@ -41,8 +41,8 @@ class Upbit extends UpitData
 
         // 리턴값 기본 설정
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $params = array();
 
@@ -78,10 +78,10 @@ class Upbit extends UpitData
         $response = file_get_contents($url, false, $context);
 
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
 
         return $return;
@@ -94,8 +94,8 @@ class Upbit extends UpitData
 
         // 리턴값 기본 설정
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $url = "https://api.upbit.com/v1/ticker?markets=" . $markets;
         $opts = array(
@@ -113,10 +113,10 @@ class Upbit extends UpitData
         $response = file_get_contents($url, false, $context);
         
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
         
         return $return;
