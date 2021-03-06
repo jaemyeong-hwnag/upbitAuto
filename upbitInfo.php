@@ -1,4 +1,5 @@
 <?php
+exit;
     include_once  dirname(__FILE__)."/database/DBData.php";
     include_once  dirname(__FILE__)."/upbit/UpitData.php";
 

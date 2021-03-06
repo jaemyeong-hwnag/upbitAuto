@@ -10,8 +10,8 @@ class Upbit extends UpitData
 
     public function getInfo() {
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $url = "https://api.upbit.com/v1/market/all?isDetails=false";
 
@@ -25,10 +25,10 @@ class Upbit extends UpitData
         curl_close($ch);
 
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
 
         return $return;
@@ -41,8 +41,8 @@ class Upbit extends UpitData
 
         // 리턴값 기본 설정
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $params = array();
 
@@ -78,10 +78,10 @@ class Upbit extends UpitData
         $response = file_get_contents($url, false, $context);
 
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
 
         return $return;
@@ -94,8 +94,8 @@ class Upbit extends UpitData
 
         // 리턴값 기본 설정
         $return = array();
-        $return['result'] = false;
-        $return['data'] = array();
+        $return["result"] = false;
+        $return["data"] = array();
 
         $url = "https://api.upbit.com/v1/ticker?markets=" . $markets;
         $opts = array(
@@ -113,14 +113,54 @@ class Upbit extends UpitData
         $response = file_get_contents($url, false, $context);
         
         if($response == false){
-            $return['result'] = false;
+            $return["result"] = false;
         } else {
-            $return['result'] = true;
-            $return['data'] = json_decode($response, true);
+            $return["result"] = true;
+            $return["data"] = json_decode($response, true);
         }
         
         return $return;
     }
+	/**
+	 * 
+	 * market
+	 */
+	public function ordersAsk($order) {/*
+		// 리턴값 기본 설정
+		$return = array();
+		$return["result"] = true;
+		$return["data"] = array();
+
+		if(isset($order)) {
+			if($order["market"] == null) $return["result"] = false;
+			if($order["volume"] == null) $return["result"] = false;
+			if($order["price"] == null) $return["result"] = false;
+			if($order["ord_type"] == null) $return["result"] = false;
+			if($order["identifier"] == null) $return["result"] = false;
+
+			$payload = $order;
+			$payload["access_key"] = $access_key;
+			$payload["nonce"] = $this->gen_uuid();
+
+			JWT::encode($payload, $secret_key, "HS256");
+			jwt_token = JWT.encode(payload, secret_key, 'HS256')
+		} else {
+			$return["result"] = false;
+		}*/
+
+		return $return;
+	}
+
+	public function ordersBid($orderArray) {
+		// 리턴값 기본 설정
+		$return = array();
+		$return["result"] = false;
+		$return["data"] = array();
+
+		if(isset($orderArray)) {
+			
+		}
+	}
 
     public function gen_uuid() {
         return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
