@@ -65,5 +65,11 @@ if($upbitAccount["result"] == true) {
 }
 
 $message .= "\n 총 수익 : " . number_format(round($revenueTotal));
+
+
+$btc = $upbit->getTicker("KRW-BTC");
+
+$message .= "\n 상한 : " . $btc["data"][0]["trade_price"];
+$message .= "\n 비트코인 현재가 : " . $btc["data"][0]["trade_price"];
 $slack->sendMessage($message);
 ?>
