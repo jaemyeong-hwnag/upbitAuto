@@ -102,6 +102,6 @@ if($message != null) {
     $message .= "\n 총 수익 : " . number_format(round($revenueTotal));
 
     $sendUrl = "https://hooks.slack.com/services/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";
-    $slack->sendMessage($message, $sendUrl);
+    //$slack->sendMessage($message, $sendUrl);
 }
 ?>
