@@ -10,11 +10,11 @@ include_once  dirname(__FILE__)."/upbit/UpitData.php";
 include_once  dirname(__FILE__)."/database/DBConnect.php";
 include_once  dirname(__FILE__)."/upbit/Upbit.php";
 
-include_once  dirname(__FILE__)."/SlackWebhooks.php";
+include_once  dirname(__FILE__)."/Messenger.php";
 
 $upbit = new Upbit;
 $dbconnect = new DBConnect;
-$slack = new SlackWebhooks;
+$messenger = new Messenger;
 
 $upbitAccount = $upbit->getAccount();
 
@@ -71,5 +71,5 @@ $btc = $upbit->getTicker("KRW-BTC");
 
 $message .= "\n 상한 : " . $btc["data"][0]["trade_price"];
 $message .= "\n 비트코인 현재가 : " . $btc["data"][0]["trade_price"];
-//$slack->sendMessage($message);
+//$messenger->sendMessage($message);
 ?>

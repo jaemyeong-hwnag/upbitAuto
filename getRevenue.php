@@ -10,11 +10,11 @@ include_once  dirname(__FILE__)."/upbit/UpitData.php";
 include_once  dirname(__FILE__)."/database/DBConnect.php";
 include_once  dirname(__FILE__)."/upbit/Upbit.php";
 
-include_once  dirname(__FILE__)."/SlackWebhooks.php";
+include_once  dirname(__FILE__)."/Messenger.php";
 
 $upbit = new Upbit;
 $dbconnect = new DBConnect;
-$slack = new SlackWebhooks;
+$messenger = new Messenger;
 
 $upbitAccount = $upbit->getAccount();
 
@@ -102,6 +102,6 @@ if($message != null) {
     $message .= "\n 총 수익 : " . number_format(round($revenueTotal));
 
     $sendUrl = "https://hooks.slack.com/services/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";
-    //$slack->sendMessage($message, $sendUrl);
+    //$messenger->sendMessage($message, $sendUrl);
 }
 ?>
